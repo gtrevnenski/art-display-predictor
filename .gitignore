@@ -1,0 +1,4 @@
+# Split folders containing training data
+data/splits/
+data/splits_*/
+
