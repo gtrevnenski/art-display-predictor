@@ -1,4 +1,16 @@
-# Split folders containing training data
-data/splits/
-data/splits_*/
+# Data folders
+data/*
 
+# CatBoost training logs
+catboost_info/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter checkpoints
+.ipynb_checkpoints
+
+# Virtual environment
+venv/
+env/
