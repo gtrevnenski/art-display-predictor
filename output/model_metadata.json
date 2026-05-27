@@ -1,0 +1,143 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-01-13T22:10:19.414597",
+  "model_type": "CatBoost Classifier",
+  "num_features": 391,
+  "categorical_features": [
+    "department",
+    "country",
+    "cat1",
+    "subcat1",
+    "cat2"
+  ],
+  "metrics": {
+    "accuracy": 0.970854851115262,
+    "precision": 0.8530532006388991,
+    "recall": 0.8823230397763375,
+    "f1_score": 0.8674412793603199,
+    "auc_roc": 0.9909416951272009,
+    "auc_pr": 0.9403754710067067
+  },
+  "top_features": [
+    {
+      "name": "department",
+      "importance": 7.9608632537591255
+    },
+    {
+      "name": "cat1",
+      "importance": 6.879787413672175
+    },
+    {
+      "name": "cat2",
+      "importance": 4.436049691536566
+    },
+    {
+      "name": "objectEndDate",
+      "importance": 3.472831405430739
+    },
+    {
+      "name": "emb_319",
+      "importance": 1.8806944572484967
+    },
+    {
+      "name": "country",
+      "importance": 1.3530584003004127
+    },
+    {
+      "name": "emb_264",
+      "importance": 1.0301375392146985
+    },
+    {
+      "name": "emb_312",
+      "importance": 0.9775863625610293
+    },
+    {
+      "name": "emb_22",
+      "importance": 0.9681126687172527
+    },
+    {
+      "name": "emb_349",
+      "importance": 0.7938914990947427
+    },
+    {
+      "name": "emb_263",
+      "importance": 0.7932832440894837
+    },
+    {
+      "name": "subcat1",
+      "importance": 0.7534013594063518
+    },
+    {
+      "name": "emb_104",
+      "importance": 0.745030639974419
+    },
+    {
+      "name": "emb_228",
+      "importance": 0.7405039820591344
+    },
+    {
+      "name": "emb_116",
+      "importance": 0.633025320070514
+    },
+    {
+      "name": "emb_24",
+      "importance": 0.6317581760317889
+    },
+    {
+      "name": "emb_127",
+      "importance": 0.6310933993530874
+    },
+    {
+      "name": "emb_97",
+      "importance": 0.6188275237743035
+    },
+    {
+      "name": "has_country",
+      "importance": 0.6063746309435536
+    },
+    {
+      "name": "emb_203",
+      "importance": 0.6057122042879335
+    },
+    {
+      "name": "emb_335",
+      "importance": 0.5815834438425235
+    },
+    {
+      "name": "emb_40",
+      "importance": 0.577557980586531
+    },
+    {
+      "name": "emb_71",
+      "importance": 0.5771271420420364
+    },
+    {
+      "name": "emb_267",
+      "importance": 0.5667810554380829
+    },
+    {
+      "name": "emb_10",
+      "importance": 0.5461561617430547
+    },
+    {
+      "name": "emb_98",
+      "importance": 0.5300927663319326
+    },
+    {
+      "name": "emb_248",
+      "importance": 0.5199652396292667
+    },
+    {
+      "name": "emb_125",
+      "importance": 0.5171461469431164
+    },
+    {
+      "name": "emb_258",
+      "importance": 0.5141037178252642
+    },
+    {
+      "name": "emb_286",
+      "importance": 0.5127268289435754
+    }
+  ]
+}

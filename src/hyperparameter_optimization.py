@@ -7,16 +7,16 @@ from catboost import CatBoostClassifier, Pool
 
 def main() -> None:
     # === Load splits ===
-    splits_dir = Path("../data/splits")
+    splits_dir = Path("../data/splits_MiniLM-L6-v2")
 
     train = np.load(splits_dir / "train.npz", allow_pickle=True)
     val = np.load(splits_dir / "val.npz", allow_pickle=True)
 
-    # Cast X to float32, y to int
-    X_train = train["X"].astype(np.float32)
+    # Keep as object dtype to preserve categorical features
+    X_train = train["X"]
     y_train = train["y"].astype(int)
 
-    X_val = val["X"].astype(np.float32)
+    X_val = val["X"]
     y_val = val["y"].astype(int)
 
     # === Load feature names ===
@@ -24,6 +24,11 @@ def main() -> None:
         splits_dir / "feature_columns.npy",
         allow_pickle=True
     ).tolist()
+
+    # === Identify categorical feature indices ===
+    categorical_features = ["department", "country", "cat1", "subcat1", "cat2"]
+    cat_indices = [i for i, col in enumerate(feature_columns) if col in categorical_features]
+    print(f"Categorical features at indices: {cat_indices}")
 
     # === Combine train + val for tuning ===
     X_tune = np.concatenate([X_train, X_val], axis=0)
@@ -40,7 +45,7 @@ def main() -> None:
     X_sub = X_tune[idx_sub]
     y_sub = y_tune[idx_sub]
 
-    train_pool_sub = Pool(X_sub, y_sub, feature_names=feature_columns)
+    train_pool_sub = Pool(X_sub, y_sub, feature_names=feature_columns, cat_features=cat_indices)
     print("Subsampled tuning set:", X_sub.shape, y_sub.shape)
 
     # === Define hyperparameter search space ===

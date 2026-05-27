@@ -1,0 +1,54 @@
+{
+  "description": "Impact of each input column on model predictions",
+  "metric": "average_precision_score (PR AUC)",
+  "baseline_pr_auc": 0.9266402408511408,
+  "sample_size": 1000,
+  "methods": {
+    "ablation": "For text columns: remove from text_all, regenerate embeddings",
+    "permutation": "For categorical and numeric: shuffle column values"
+  },
+  "columns": {
+    "department": {
+      "method": "permutation",
+      "pr_auc_drop": 0.3433863620981407,
+      "std": 0.015199622817123426,
+      "percentage_impact": 37.057139001726526
+    },
+    "country": {
+      "method": "permutation",
+      "pr_auc_drop": 0.03825104447204967,
+      "std": 0.002589361019269431,
+      "percentage_impact": 4.1279282709452785
+    },
+    "objectEndDate": {
+      "method": "permutation",
+      "pr_auc_drop": 0.022988168103467748,
+      "std": 0.0046098675046453205,
+      "percentage_impact": 2.480808310499507
+    },
+    "cat1": {
+      "method": "permutation",
+      "pr_auc_drop": 0.021815570333170647,
+      "std": 0.0008054458516603897,
+      "percentage_impact": 2.3542653741361947
+    },
+    "cat2": {
+      "method": "permutation",
+      "pr_auc_drop": 0.009974744890870394,
+      "std": 0.0030902720502467627,
+      "percentage_impact": 1.076442016127894
+    },
+    "subcat1": {
+      "method": "permutation",
+      "pr_auc_drop": 0.003156717861533228,
+      "std": 0.0011911624996873245,
+      "percentage_impact": 0.3406627213419642
+    },
+    "has_country": {
+      "method": "permutation",
+      "pr_auc_drop": -0.00041189579784750574,
+      "std": 0.001895027918602407,
+      "percentage_impact": -0.04445045441466796
+    }
+  }
+}

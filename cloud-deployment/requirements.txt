@@ -1,0 +1,17 @@
+# API Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+
+# ML Dependencies
+sentence-transformers==2.7.0
+transformers==4.40.0
+huggingface-hub==0.23.0
+catboost==1.2.2
+numpy==1.24.3
+torch==2.1.0
+
+# Optional but recommended
+python-multipart==0.0.6
+requests==2.31.0
+

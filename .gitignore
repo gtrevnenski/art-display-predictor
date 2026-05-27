@@ -14,3 +14,10 @@ __pycache__/
 # Virtual environment
 venv/
 env/
+
+# Website integration files (copy to website project)
+website-integration/
+
+# Cloud deployment files (copy to deploy, don't commit model)
+cloud-deployment/model.cbm
+cloud-deployment/output/

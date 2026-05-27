@@ -8,20 +8,20 @@ from catboost import CatBoostClassifier, Pool
 
 def main() -> None:
     # === Load splits ===
-    splits_dir = Path("../data/splits")
+    splits_dir = Path("../data/splits_MiniLM-L6-v2")
 
     train = np.load(splits_dir / "train.npz", allow_pickle=True)
     val   = np.load(splits_dir / "val.npz",   allow_pickle=True)
     test  = np.load(splits_dir / "test.npz",  allow_pickle=True)
 
-    # Cast X to float32, y to int
-    X_train = train["X"].astype(np.float32)
+    # Keep as object dtype to preserve categorical features
+    X_train = train["X"]
     y_train = train["y"].astype(int)
 
-    X_val   = val["X"].astype(np.float32)
+    X_val   = val["X"]
     y_val   = val["y"].astype(int)
 
-    X_test  = test["X"].astype(np.float32)
+    X_test  = test["X"]
     y_test  = test["y"].astype(int)
 
     print("X_train dtype:", X_train.dtype, "shape:", X_train.shape)
@@ -34,52 +34,37 @@ def main() -> None:
         allow_pickle=True
     ).tolist()
 
-    print("Num features (before dropping):", len(feature_columns))
+    print("Num features:", len(feature_columns))
 
-    # === Drop selected columns ===
-    cols_to_remove = [
-        "isTimelineWork",
-        "isPublicDomain",
-        "objectEndDate",
-        "objectBeginDate",
-        "accessionYear",
-    ]
-
-    # Get indices of columns we want to drop
-    drop_indices = [feature_columns.index(col) for col in cols_to_remove]
-    print("Dropping indices:", drop_indices)
-
-    # Sort descending so deleting works without shifting indices
-    drop_indices_sorted = sorted(drop_indices, reverse=True)
-
-    for idx in drop_indices_sorted:
-        X_train = np.delete(X_train, idx, axis=1)
-        X_val   = np.delete(X_val,   idx, axis=1)
-        X_test  = np.delete(X_test,  idx, axis=1)
-
-        # Remove from feature column names
-        feature_columns.pop(idx)
-
-    print("Num features (after dropping):", len(feature_columns))
+    # === Identify categorical feature indices ===
+    categorical_features = ["department", "country", "cat1", "subcat1", "cat2"]
+    cat_indices = [i for i, col in enumerate(feature_columns) if col in categorical_features]
+    print(f"Categorical features at indices: {cat_indices}")
 
     # === Build CatBoost Pools ===
     train_pool = Pool(
         X_train, y_train,
         feature_names=feature_columns,
+        cat_features=cat_indices,
     )
 
     val_pool = Pool(
         X_val, y_val,
         feature_names=feature_columns,
+        cat_features=cat_indices,
     )
 
     # === Define and train the model ===
     model = CatBoostClassifier(
-        iterations=600,
-        depth=6,
-        learning_rate=0.05,
+        iterations=800,
+        depth=8,
+        learning_rate=0.08,
+        l2_leaf_reg=5,
+        border_count=64,
+        random_strength=2,
         loss_function="Logloss",
-        eval_metric="AUC",
+        auto_class_weights="Balanced",
+        eval_metric="PRAUC",
         task_type="GPU",
         verbose=100,
     )

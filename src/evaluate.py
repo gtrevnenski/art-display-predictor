@@ -14,42 +14,23 @@ from sklearn.metrics import (
 
 def main() -> None:
     # === Load splits ===
-    splits_dir = Path("../data/splits")
+    splits_dir = Path("../data/splits_MiniLM-L6-v2")
 
     val = np.load(splits_dir / "val.npz", allow_pickle=True)
     test = np.load(splits_dir / "test.npz", allow_pickle=True)
 
-    X_val = val["X"].astype(np.float32)
+    # Keep as object dtype to preserve categorical features
+    X_val = val["X"]
     y_val = val["y"].astype(int)
 
-    X_test = test["X"].astype(np.float32)
+    X_test = test["X"]
     y_test = test["y"].astype(int)
 
-    # === Load feature names ===
-    feature_columns = np.load(
-        splits_dir / "feature_columns.npy",
-        allow_pickle=True
-    ).tolist()
-
-    # === Drop selected columns ===
-    cols_to_remove = ["isTimelineWork", "isPublicDomain", "accessionYear"]
-
-    # Get indices of columns we want to drop
-    drop_indices = [feature_columns.index(col) for col in cols_to_remove]
-    print("Dropping indices:", drop_indices)
-
-    # Sort descending so deleting works without shifting indices
-    drop_indices_sorted = sorted(drop_indices, reverse=True)
-
-    for idx in drop_indices_sorted:
-        X_val = np.delete(X_val, idx, axis=1)
-        X_test = np.delete(X_test, idx, axis=1)
-
-        # Remove from feature column names
-        feature_columns.pop(idx)
+    print(f"X_val shape: {X_val.shape}")
+    print(f"X_test shape: {X_test.shape}")
 
     # === Load model ===
-    model_path = Path("../models/catboost_model_optimized_parameters2.cbm")
+    model_path = Path("../saved_models/catboost_model__MiniLM-L6-v2.cbm")
     model = CatBoostClassifier()
     model.load_model(model_path)
     print(f"Loaded model from: {model_path}")

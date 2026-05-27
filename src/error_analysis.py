@@ -13,10 +13,11 @@ def load_splits(splits_dir: Path) -> Tuple[np.ndarray, np.ndarray, np.ndarray, n
     val = np.load(splits_dir / "val.npz", allow_pickle=True)
     test = np.load(splits_dir / "test.npz", allow_pickle=True)
 
-    X_val = val["X"].astype(np.float32)
+    # Keep as object dtype to preserve categorical features
+    X_val = val["X"]
     y_val = val["y"].astype(int)
 
-    X_test = test["X"].astype(np.float32)
+    X_test = test["X"]
     y_test = test["y"].astype(int)
 
     feature_columns = np.load(
@@ -180,12 +181,11 @@ def analyze_errors_by_category(
 def main() -> None:
     # === Configuration ===
     data_dir = Path("../data")
-    splits_dir = data_dir / "splits"
-    models_dir = Path("../models")
-    model_filename = "catboost_model_optimized_parameters2.cbm"
-    metadata_file = data_dir / "meta_for_model.parquet"
+    splits_dir = data_dir / "splits_MiniLM-L6-v2"
+    models_dir = Path("../saved_models")
+    model_filename = "catboost_model__MiniLM-L6-v2.cbm"
+    metadata_file = data_dir / "meta_for_model_MiniLM-L6-v2.parquet"
 
-    COLS_TO_REMOVE = ["isTimelineWork", "isPublicDomain", "accessionYear"]
     THRESHOLD = 0.5
 
     print("=" * 70)
@@ -205,14 +205,12 @@ def main() -> None:
     model = load_model(model_path)
     print(f"\nModel loaded from: {model_path}")
 
-    # === Apply feature dropping ===
-    print("\nApplying feature preprocessing...")
-    X_val_processed, feature_columns_processed = apply_feature_drop(
-        X_val, feature_columns, COLS_TO_REMOVE
-    )
-    X_test_processed, _ = apply_feature_drop(X_test, feature_columns, COLS_TO_REMOVE)
+    # No feature dropping needed - features are already prepared
+    X_val_processed = X_val
+    X_test_processed = X_test
+    feature_columns_processed = feature_columns
 
-    print(f"Processed features: {len(feature_columns_processed)}")
+    print(f"Features: {len(feature_columns_processed)}")
 
     # === Get predictions ===
     print("\nGenerating predictions...")
@@ -241,7 +239,7 @@ def main() -> None:
 
     # === Analyze by category (if full metadata available) ===
     try:
-        full_metadata_file = data_dir / "df_train_clean.parquet"
+        full_metadata_file = data_dir / "df_train_clean2.parquet"
         if full_metadata_file.exists():
             print("\n\nLoading full metadata for detailed analysis...")
             df_full_metadata = pd.read_parquet(full_metadata_file)

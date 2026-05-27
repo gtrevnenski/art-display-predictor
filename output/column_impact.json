@@ -1,0 +1,41 @@
+{
+  "method": "Column-level impact analysis",
+  "description": "Impact of each input column on model predictions",
+  "feature_importance": {
+    "method": "CatBoost feature importance (aggregated by column)",
+    "columns": [
+      {
+        "column": "emb",
+        "importance": 88.22446445827543
+      },
+      {
+        "column": "objectEndDate",
+        "importance": 7.488980288138236
+      },
+      {
+        "column": "objectBeginDate",
+        "importance": 4.2865552535863936
+      }
+    ]
+  },
+  "permutation_importance": {
+    "method": "Permutation importance (performance drop when shuffled)",
+    "columns": [
+      {
+        "column": "emb",
+        "mean_auc_drop": 0.2621424619314531,
+        "std_auc_drop": 0.0017069581686084724
+      },
+      {
+        "column": "objectEndDate",
+        "mean_auc_drop": 0.01054737447760079,
+        "std_auc_drop": 0.00029164406576769134
+      },
+      {
+        "column": "objectBeginDate",
+        "mean_auc_drop": 0.0026196147270115544,
+        "std_auc_drop": 3.844523190696712e-05
+      }
+    ]
+  }
+}
